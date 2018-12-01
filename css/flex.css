@@ -1,0 +1,245 @@
+/*  FLEX.css  edition 2.3 
+    Based on MDN documentation.
+    These classes use only the standard rules; Please use with an Autoprefixer for browser support.
+
+    Naming Rules:
+      - three letter abbreviations for all terms
+      - proceed left-to-right, from most general to most specific
+
+      aro :: around
+      ato :: auto
+      bas :: baseline
+      btw :: between
+      cen :: center
+      col :: column
+      con :: content
+      eig :: eight
+      end :: end
+      fiv :: five
+      flx :: flex
+      fou :: four
+      itm :: item
+      its :: items
+      jus :: justify
+      nin :: nine
+      no  :: no
+      one :: one
+      rev :: reverse
+      row :: row
+      sch :: stretch
+      sel :: self
+      sev :: seven
+      six :: six
+      str :: start
+      thr :: three
+      two :: two
+      wrp :: wrap
+*/
+
+/*  DECLARATION  ---------------------------------------------------------------
+
+/*  FLEX CONTAINER ( SET )
+    Summary:    Make the elements inside a <tag> flow with flexbox by setting the tag's display property to 'flex'.
+    Reference:  https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Using_flexbox_to_lay_out_web_applications
+*/
+.flx,
+.flx-set {
+  display: flex;
+}
+
+/*  FLEX ITEM
+    Summary:    A shorthand property specifying the ability of a flex item to alter its dimensions to fill available space. Summarizes {flex-grow, flex-shrink, flex-basis }
+    Reference:  https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+    Default:    0 1 0;
+*/
+.flx-itm {
+  flex: 1 1 0;
+}
+.flx-itm-ato {
+  flex: 1 1 auto;
+}
+
+/*  DIRECTION ( ORIENTATION )  -------------------------------------------------
+    Summary:    Specifies how flex items are placed in the flex container defining the main axis and the direction (normal or reversed).
+    Options:
+        Column: set main axis to vertical
+        Row :   set main axis to horizontal
+    Reference:  https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction
+    Default:    flex-direction: row;
+*/
+.flx-col {
+  flex-direction: column ;
+}
+.flx-row {
+  flex-direction: row;
+}
+
+/*  JUSTIFICATION (Main axis)   ------------------------------------------------
+    Summary:    Aefines how the browser distributes space between and around flex items along the main-axis of their container.
+    Reference:  https://developer.mozilla.org/en-US/docs/Web/CSS/justify-con
+    Default:    justify-con: flex-start;
+*/
+/* Pack items around the center */
+.flx-jus-con-cen {
+  justify-content: center;
+}
+/* Pack flex items from the start  */
+.flx-jus-con-str {
+  justify-content: flex-start;
+}
+/* Pack items from the end */
+.flx-jus-con-end {
+  justify-content: flex-end;
+}
+/* Distribute items evenly, first item at the start, last at the end */
+.flx-jus-con-btw {
+  justify-content: space-between;
+}
+/* Distribute items evenly, items have equal space around them */
+.flx-jus-con-aro {
+  justify-content: space-around;
+}
+
+/*
+    ALIGN CONTENT ( Cross axis )  ----------------------------------------------
+    Summary:   Aligns a flex container's lines within the flex container when there is extra space on the cross-axis.
+    Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/align-con
+    Default:   align-con: flex-start;
+*/
+/* Pack lines from the cross-axis start */
+.flx-aln-con-str {
+  align-content: flex-start;
+}
+/* Pack lines to the cross-axis end */
+.flx-aln-con-end {
+  align-content: flex-end;
+}
+/* Pack lines around the cross-axis center */
+.flx-aln-con-cen {
+  align-content: center;
+}
+/* Distribute lines along the cross-axis, start to end */
+.flx-aln-con-btw {
+  align-content: space-between;
+}
+/* Distribute lines along the cross-axis, equally spaced */
+.flx-aln-con-aro {
+  align-content: space-around;
+}
+/* Stretch lines to occupy the whole cross-axis */
+.flx-aln-con-sch {
+  align-content: stretch;
+}
+
+/*
+    ALIGN ITEMS ( Cross axis )  ------------------------------------------------
+    Summary:   Aligns flex items of the current flex line the same way as justify-con but in the perpendicular direction.
+    Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/align-items
+    Default:   align-items: stretch;
+*/
+/* Center items in the cross-axis */
+.flx-aln-its-cen {
+  align-items: center;
+}
+/* Align to cross-start */
+.flx-aln-its-str {
+  align-items: flex-start;
+}
+/* Align to cross-end */
+.flx-aln-its-end {
+  align-items: flex-end;
+}
+/* Align the items' baselines */
+.flx-aln-its-bas {
+  align-items: baseline;
+}
+/* Stretch the items to fit DEFAULT VALUE  */
+.flx-aln-its-sch {
+  align-items: stretch;
+}
+
+/*
+    ALIGN SELF ( Cross axis )  ------------------------------------------------
+    Summary:   Aligns flex items of the current flex line overriding the align-items value.
+    Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/align-self
+    Default:   align-self: auto;
+*/
+/*  Computes to parent's align-items value or stretch if the element has no parent.  */
+.flx-aln-sel-ato {
+  align-self: auto;
+}
+/*  Cross-start margin edge of the flex item is flushed with the cross-start edge of the line.  */
+.flx-aln-sel-str {
+  align-self: flex-start;
+}
+/*  Cross-end margin edge of the flex item is flushed with the cross-end edge of the line.  */
+.flx-aln-sel-end {
+  align-self: flex-end;
+}
+/* Flex item's margin box is centered within the line on the cross-axis. If the cross-size of the item is larger than the flex container, it will overflow equally in both directions.  */
+.flx-aln-sel-cen {
+  align-self: center;
+}
+/*  All flex items are aligned such that their baselines align. The item with the largest distance between its cross-start margin edge and its baseline is flushed with the cross-start edge of the line.  */
+.flx-aln-sel-bas {
+  align-self: baseline;
+}
+/*  Flex items are stretched such as the cross-size of the item's margin box is the same as the line while respecting width and height constraints.  */
+.flx-aln-sel-sch {
+  align-self: stretch;
+}
+
+/*
+    WRAPPING -------------------------------------------------------------------
+    Summary:   Specifies whether flex items are forced into a single line or can be wrapped onto multiple lines. 
+               If wrapping is allowed, this property also enables you to control the direction in which lines are stacked.
+    Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap
+    Default:   flex-wrap: nowrap;
+*/
+.flx-wrp-no {
+  flex-wrap: nowrap;
+}
+.flx-wrp-rev {
+  flex-wrap: wrap-reverse;
+}
+.flx-wrp {
+  flex-wrap: wrap;
+}
+
+/*
+    VISUAL ORDER ---------------------------------------------------------------
+    Summary:   Specifies the order used to lay out flex items in their flex container. Elements are laid out in the ascending order of the order value.
+               Elements with the same order value are laid out in the order in which they appear in the source code.
+    Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/order
+    Default:   order: 0; { no order }
+*/
+.flx-ord-nil {
+  order: -1;
+}
+.flx-ord-one {
+  order: 1;
+}
+.flx-ord-two {
+  order: 2;
+}
+.flx-ord-thr {
+  order: 3;
+}
+.flx-ord-fou {
+  order: 4;
+}
+.flx-ord-fiv {
+  order: 5;
+}
+.flx-ord-six {
+  order: 6;
+}
+.flx-ord-sev {
+  order: 7;
+}
+.flx-ord-eig {
+  order: 8;
+}
+.flx-ord-nin {
+  order: 9;
+}

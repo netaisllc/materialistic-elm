@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>TopAppBar model</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+	<link rel="stylesheet" href="../../css/normalize.css">
+    <link rel="stylesheet" href="../../css/html5boilerplate.css">
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/topappbar.css">
+
+    <style>
+        body {
+            height: 200vh;
+        }
+    </style>
+</head>
+<body class="typography">
+    <header class="top-app-bar fixed" id="appbar">
+        <div class="row">
+            <section class="flx-jus-con-str flx-ord-nil">
+                <a href="#" class="icon material-icons">menu</a>
+                <span class="title">Standard</span>
+            </section>
+            <section class="flx-jus-con-end flx-ord-one" role="toolbar">
+                <a href="#download" class="icon material-icons" aria-label="Download" alt="Download">file_download</a>
+                <a href="#print" class="icon material-icons" aria-label="Print this page" alt="Print this page">print</a>
+                <a href="#bookmark" class="icon material-icons" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
+            </section>
+        </div>
+    </header>
+    <main>
+        <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint 
+                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+                anim id est laborum.
+            </p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint 
+                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+                anim id est laborum.
+            </p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint 
+                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+                anim id est laborum.
+            </p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 
+                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint 
+                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+                anim id est laborum.
+            </p>
+        </div>
+    </main> 
+    <script>
+        document.onscroll = function( e ) {
+            var element = document.getElementById('appbar');
+            element.classList.toggle( "scrolled", window.scrollY > 24 );
+            console.log( e.target.scrollingElement.scrollTop );
+            // https://ellie-app.com/ndPpxVGFVta1 TASKS
+            // https://medium.com/@l.mugnaini/scroll-and-resize-events-in-elm-ac4f0589f42 // PORTS
+            // https://groups.google.com/forum/#!topic/elm-discuss/yzIiqZ30qdg // ELM EVENTS DECODER
+            // https://package.elm-lang.org/packages/elm/browser/latest/Browser-Dom  GETVIEWPORT
+        }        
+    </script>   
+</body>
+</html>

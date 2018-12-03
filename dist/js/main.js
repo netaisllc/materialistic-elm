@@ -1,110 +1,3 @@
-// modules are defined as an array
-// [ module function, map of requires ]
-//
-// map of requires is short require name -> numeric require
-//
-// anything defined in a previous bundle is accessed via the
-// orig method which is the require for previous bundles
-
-// eslint-disable-next-line no-global-assign
-parcelRequire = (function (modules, cache, entry, globalName) {
-  // Save the require from previous bundle to this closure if any
-  var previousRequire = typeof parcelRequire === 'function' && parcelRequire;
-  var nodeRequire = typeof require === 'function' && require;
-
-  function newRequire(name, jumped) {
-    if (!cache[name]) {
-      if (!modules[name]) {
-        // if we cannot find the module within our internal map or
-        // cache jump to the current global require ie. the last bundle
-        // that was added to the page.
-        var currentRequire = typeof parcelRequire === 'function' && parcelRequire;
-        if (!jumped && currentRequire) {
-          return currentRequire(name, true);
-        }
-
-        // If there are other bundles on this page the require from the
-        // previous one is saved to 'previousRequire'. Repeat this as
-        // many times as there are bundles until the module is found or
-        // we exhaust the require chain.
-        if (previousRequire) {
-          return previousRequire(name, true);
-        }
-
-        // Try the node require function if it exists.
-        if (nodeRequire && typeof name === 'string') {
-          return nodeRequire(name);
-        }
-
-        var err = new Error('Cannot find module \'' + name + '\'');
-        err.code = 'MODULE_NOT_FOUND';
-        throw err;
-      }
-
-      localRequire.resolve = resolve;
-      localRequire.cache = {};
-
-      var module = cache[name] = new newRequire.Module(name);
-
-      modules[name][0].call(module.exports, localRequire, module, module.exports, this);
-    }
-
-    return cache[name].exports;
-
-    function localRequire(x){
-      return newRequire(localRequire.resolve(x));
-    }
-
-    function resolve(x){
-      return modules[name][1][x] || x;
-    }
-  }
-
-  function Module(moduleName) {
-    this.id = moduleName;
-    this.bundle = newRequire;
-    this.exports = {};
-  }
-
-  newRequire.isParcelRequire = true;
-  newRequire.Module = Module;
-  newRequire.modules = modules;
-  newRequire.cache = cache;
-  newRequire.parent = previousRequire;
-  newRequire.register = function (id, exports) {
-    modules[id] = [function (require, module) {
-      module.exports = exports;
-    }, {}];
-  };
-
-  for (var i = 0; i < entry.length; i++) {
-    newRequire(entry[i]);
-  }
-
-  if (entry.length) {
-    // Expose entry point to Node, AMD or browser globals
-    // Based on https://github.com/ForbesLindesay/umd/blob/master/template.js
-    var mainExports = newRequire(entry[entry.length - 1]);
-
-    // CommonJS
-    if (typeof exports === "object" && typeof module !== "undefined") {
-      module.exports = mainExports;
-
-    // RequireJS
-    } else if (typeof define === "function" && define.amd) {
-     define(function () {
-       return mainExports;
-     });
-
-    // <script>
-    } else if (globalName) {
-      this[globalName] = mainExports;
-    }
-  }
-
-  // Override the current require with this new one
-  return newRequire;
-})({"src/Main.elm":[function(require,module,exports) {
 (function(scope){
 'use strict';
 
@@ -960,6 +853,53 @@ var _Basics_xor = F2(function(a, b) { return a !== b; });
 
 
 
+function _Char_toCode(char)
+{
+	var code = char.charCodeAt(0);
+	if (0xD800 <= code && code <= 0xDBFF)
+	{
+		return (code - 0xD800) * 0x400 + char.charCodeAt(1) - 0xDC00 + 0x10000
+	}
+	return code;
+}
+
+function _Char_fromCode(code)
+{
+	return _Utils_chr(
+		(code < 0 || 0x10FFFF < code)
+			? '\uFFFD'
+			:
+		(code <= 0xFFFF)
+			? String.fromCharCode(code)
+			:
+		(code -= 0x10000,
+			String.fromCharCode(Math.floor(code / 0x400) + 0xD800, code % 0x400 + 0xDC00)
+		)
+	);
+}
+
+function _Char_toUpper(char)
+{
+	return _Utils_chr(char.toUpperCase());
+}
+
+function _Char_toLower(char)
+{
+	return _Utils_chr(char.toLowerCase());
+}
+
+function _Char_toLocaleUpper(char)
+{
+	return _Utils_chr(char.toLocaleUpperCase());
+}
+
+function _Char_toLocaleLower(char)
+{
+	return _Utils_chr(char.toLocaleLowerCase());
+}
+
+
+
 var _String_cons = F2(function(chr, str)
 {
 	return chr + str;
@@ -1269,53 +1209,6 @@ function _String_fromList(chars)
 	return _List_toArray(chars).join('');
 }
 
-
-
-
-function _Char_toCode(char)
-{
-	var code = char.charCodeAt(0);
-	if (0xD800 <= code && code <= 0xDBFF)
-	{
-		return (code - 0xD800) * 0x400 + char.charCodeAt(1) - 0xDC00 + 0x10000
-	}
-	return code;
-}
-
-function _Char_fromCode(code)
-{
-	return _Utils_chr(
-		(code < 0 || 0x10FFFF < code)
-			? '\uFFFD'
-			:
-		(code <= 0xFFFF)
-			? String.fromCharCode(code)
-			:
-		(code -= 0x10000,
-			String.fromCharCode(Math.floor(code / 0x400) + 0xD800, code % 0x400 + 0xDC00)
-		)
-	);
-}
-
-function _Char_toUpper(char)
-{
-	return _Utils_chr(char.toUpperCase());
-}
-
-function _Char_toLower(char)
-{
-	return _Utils_chr(char.toLowerCase());
-}
-
-function _Char_toLocaleUpper(char)
-{
-	return _Utils_chr(char.toLocaleUpperCase());
-}
-
-function _Char_toLocaleLower(char)
-{
-	return _Utils_chr(char.toLocaleLowerCase());
-}
 
 
 
@@ -4977,16 +4870,6 @@ function _Browser_load(url)
 		}
 	}));
 }
-var author$project$Main$init = {baseClass: 'top-app-bar', bgColor: 'bg-darkblue', color: 'white', title: 'Materialistic Elm / TopAppBar / Standard'};
-var author$project$Main$update = F2(
-	function (msg, model) {
-		return model;
-	});
-var elm$core$Basics$True = {$: 'True'};
-var elm$core$Basics$apL = F2(
-	function (f, x) {
-		return f(x);
-	});
 var elm$core$Basics$EQ = {$: 'EQ'};
 var elm$core$Basics$LT = {$: 'LT'};
 var elm$core$Elm$JsArray$foldr = _JsArray_foldr;
@@ -5010,6 +4893,7 @@ var elm$core$Array$foldr = F3(
 			A3(elm$core$Elm$JsArray$foldr, func, baseCase, tail),
 			tree);
 	});
+var elm$core$List$cons = _List_cons;
 var elm$core$Array$toList = function (array) {
 	return A3(elm$core$Array$foldr, elm$core$List$cons, _List_Nil, array);
 };
@@ -5066,129 +4950,39 @@ var elm$core$Set$toList = function (_n0) {
 	var dict = _n0.a;
 	return elm$core$Dict$keys(dict);
 };
-var elm$core$List$cons = _List_cons;
-var elm$core$Basics$add = _Basics_add;
-var elm$core$Basics$gt = _Utils_gt;
-var elm$core$List$foldl = F3(
-	function (func, acc, list) {
-		foldl:
-		while (true) {
-			if (!list.b) {
-				return acc;
-			} else {
-				var x = list.a;
-				var xs = list.b;
-				var $temp$func = func,
-					$temp$acc = A2(func, x, acc),
-					$temp$list = xs;
-				func = $temp$func;
-				acc = $temp$acc;
-				list = $temp$list;
-				continue foldl;
-			}
-		}
-	});
-var elm$core$List$reverse = function (list) {
-	return A3(elm$core$List$foldl, elm$core$List$cons, _List_Nil, list);
+var author$project$Main$init = {
+	actions: _List_fromArray(
+		[
+			{glyph: 'file_download', href: 'download', name: 'Download'},
+			{glyph: 'print', href: 'print', name: 'Print this page'},
+			{glyph: 'bookmark', href: 'bookmark', name: 'Bookmark this page'}
+		]),
+	baseClass: 'top-app-bar',
+	bgColor: 'bg-darkblue',
+	color: 'white',
+	title: 'Materialistic Elm / TopAppBar / Standard'
 };
-var elm$core$List$foldrHelper = F4(
-	function (fn, acc, ctr, ls) {
-		if (!ls.b) {
-			return acc;
-		} else {
-			var a = ls.a;
-			var r1 = ls.b;
-			if (!r1.b) {
-				return A2(fn, a, acc);
-			} else {
-				var b = r1.a;
-				var r2 = r1.b;
-				if (!r2.b) {
-					return A2(
-						fn,
-						a,
-						A2(fn, b, acc));
-				} else {
-					var c = r2.a;
-					var r3 = r2.b;
-					if (!r3.b) {
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(fn, c, acc)));
-					} else {
-						var d = r3.a;
-						var r4 = r3.b;
-						var res = (ctr > 500) ? A3(
-							elm$core$List$foldl,
-							fn,
-							acc,
-							elm$core$List$reverse(r4)) : A4(elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(
-									fn,
-									c,
-									A2(fn, d, res))));
-					}
-				}
-			}
-		}
+var author$project$Main$update = F2(
+	function (msg, model) {
+		return model;
 	});
-var elm$core$List$foldr = F3(
-	function (fn, acc, ls) {
-		return A4(elm$core$List$foldrHelper, fn, acc, 0, ls);
-	});
-var elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var elm$core$List$map = F2(
-	function (f, xs) {
-		return A3(
-			elm$core$List$foldr,
-			F2(
-				function (x, acc) {
-					return A2(
-						elm$core$List$cons,
-						f(x),
-						acc);
-				}),
-			_List_Nil,
-			xs);
-	});
-var elm$core$Maybe$Just = function (a) {
-	return {$: 'Just', a: a};
+var author$project$Main$Bold = function (a) {
+	return {$: 'Bold', a: a};
 };
-var elm$core$Maybe$Nothing = {$: 'Nothing'};
-var elm$core$String$join = F2(
-	function (sep, chunks) {
-		return A2(
-			_String_join,
-			sep,
-			_List_toArray(chunks));
-	});
-var elm$core$Tuple$first = function (_n0) {
-	var x = _n0.a;
+var author$project$Main$Italic = function (a) {
+	return {$: 'Italic', a: a};
+};
+var elm$core$Basics$identity = function (x) {
 	return x;
 };
-var elm$core$Tuple$second = function (_n0) {
-	var y = _n0.b;
-	return y;
+var elm$core$Basics$False = {$: 'False'};
+var elm$core$Basics$True = {$: 'True'};
+var elm$core$Result$isOk = function (result) {
+	if (result.$ === 'Ok') {
+		return true;
+	} else {
+		return false;
+	}
 };
 var elm$core$Array$branchFactor = 32;
 var elm$core$Array$Array_elm_builtin = F4(
@@ -5213,6 +5007,28 @@ var elm$core$Array$SubTree = function (a) {
 	return {$: 'SubTree', a: a};
 };
 var elm$core$Elm$JsArray$initializeFromList = _JsArray_initializeFromList;
+var elm$core$List$foldl = F3(
+	function (func, acc, list) {
+		foldl:
+		while (true) {
+			if (!list.b) {
+				return acc;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				var $temp$func = func,
+					$temp$acc = A2(func, x, acc),
+					$temp$list = xs;
+				func = $temp$func;
+				acc = $temp$acc;
+				list = $temp$list;
+				continue foldl;
+			}
+		}
+	});
+var elm$core$List$reverse = function (list) {
+	return A3(elm$core$List$foldl, elm$core$List$cons, _List_Nil, list);
+};
 var elm$core$Array$compressNodes = F2(
 	function (nodes, acc) {
 		compressNodes:
@@ -5240,6 +5056,10 @@ var elm$core$Basics$apR = F2(
 		return f(x);
 	});
 var elm$core$Basics$eq = _Utils_equal;
+var elm$core$Tuple$first = function (_n0) {
+	var x = _n0.a;
+	return x;
+};
 var elm$core$Array$treeFromBuilder = F2(
 	function (nodeList, nodeListSize) {
 		treeFromBuilder:
@@ -5256,7 +5076,13 @@ var elm$core$Array$treeFromBuilder = F2(
 			}
 		}
 	});
+var elm$core$Basics$add = _Basics_add;
+var elm$core$Basics$apL = F2(
+	function (f, x) {
+		return f(x);
+	});
 var elm$core$Basics$floor = _Basics_floor;
+var elm$core$Basics$gt = _Utils_gt;
 var elm$core$Basics$max = F2(
 	function (x, y) {
 		return (_Utils_cmp(x, y) > 0) ? x : y;
@@ -5287,7 +5113,6 @@ var elm$core$Array$builderToArray = F2(
 				builder.tail);
 		}
 	});
-var elm$core$Basics$False = {$: 'False'};
 var elm$core$Basics$idiv = _Basics_idiv;
 var elm$core$Basics$lt = _Utils_lt;
 var elm$core$Elm$JsArray$initialize = _JsArray_initialize;
@@ -5330,18 +5155,15 @@ var elm$core$Array$initialize = F2(
 			return A5(elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
+var elm$core$Maybe$Just = function (a) {
+	return {$: 'Just', a: a};
+};
+var elm$core$Maybe$Nothing = {$: 'Nothing'};
 var elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
 var elm$core$Result$Ok = function (a) {
 	return {$: 'Ok', a: a};
-};
-var elm$core$Result$isOk = function (result) {
-	if (result.$ === 'Ok') {
-		return true;
-	} else {
-		return false;
-	}
 };
 var elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
@@ -5425,6 +5247,13 @@ var elm$core$List$indexedMap = F2(
 	});
 var elm$core$String$all = _String_all;
 var elm$core$String$fromInt = _String_fromNumber;
+var elm$core$String$join = F2(
+	function (sep, chunks) {
+		return A2(
+			_String_join,
+			sep,
+			_List_toArray(chunks));
+	});
 var elm$core$String$uncons = _String_uncons;
 var elm$core$String$split = F2(
 	function (sep, string) {
@@ -5541,10 +5370,6 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 			}
 		}
 	});
-var elm$json$Json$Encode$string = _Json_wrap;
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
@@ -5560,6 +5385,132 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
+var elm$html$Html$b = _VirtualDom_node('b');
+var elm$html$Html$i = _VirtualDom_node('i');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var author$project$Main$decorate = function (style) {
+	switch (style.$) {
+		case 'Bold':
+			var string = style.a;
+			return A2(
+				elm$html$Html$b,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text(string)
+					]));
+		case 'BoldItalic':
+			var string = style.a;
+			return A2(
+				elm$html$Html$b,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$i,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text(string)
+							]))
+					]));
+		default:
+			var string = style.a;
+			return A2(
+				elm$html$Html$i,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text(string)
+					]));
+	}
+};
+var elm$core$List$foldrHelper = F4(
+	function (fn, acc, ctr, ls) {
+		if (!ls.b) {
+			return acc;
+		} else {
+			var a = ls.a;
+			var r1 = ls.b;
+			if (!r1.b) {
+				return A2(fn, a, acc);
+			} else {
+				var b = r1.a;
+				var r2 = r1.b;
+				if (!r2.b) {
+					return A2(
+						fn,
+						a,
+						A2(fn, b, acc));
+				} else {
+					var c = r2.a;
+					var r3 = r2.b;
+					if (!r3.b) {
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(fn, c, acc)));
+					} else {
+						var d = r3.a;
+						var r4 = r3.b;
+						var res = (ctr > 500) ? A3(
+							elm$core$List$foldl,
+							fn,
+							acc,
+							elm$core$List$reverse(r4)) : A4(elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(
+									fn,
+									c,
+									A2(fn, d, res))));
+					}
+				}
+			}
+		}
+	});
+var elm$core$List$foldr = F3(
+	function (fn, acc, ls) {
+		return A4(elm$core$List$foldrHelper, fn, acc, 0, ls);
+	});
+var elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var elm$core$List$map = F2(
+	function (f, xs) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, acc) {
+					return A2(
+						elm$core$List$cons,
+						f(x),
+						acc);
+				}),
+			_List_Nil,
+			xs);
+	});
+var elm$core$Tuple$second = function (_n0) {
+	var y = _n0.b;
+	return y;
+};
+var elm$json$Json$Encode$string = _Json_wrap;
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -5601,8 +5552,6 @@ var author$project$Main$makeAttr = F2(
 		return A2(elm$html$Html$Attributes$attribute, name, value);
 	});
 var elm$html$Html$a = _VirtualDom_node('a');
-var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$html$Html$Attributes$href = function (url) {
 	return A2(
 		elm$html$Html$Attributes$stringProperty,
@@ -5610,51 +5559,25 @@ var elm$html$Html$Attributes$href = function (url) {
 		_VirtualDom_noJavaScriptUri(url));
 };
 var elm$html$Html$Attributes$title = elm$html$Html$Attributes$stringProperty('title');
-var author$project$Main$sectionEndEle = _List_fromArray(
-	[
-		A2(
+var author$project$Main$makeAnchor = function (action) {
+	return A2(
 		elm$html$Html$a,
 		_List_fromArray(
 			[
-				elm$html$Html$Attributes$href('#download'),
+				elm$html$Html$Attributes$href('#' + action.href),
 				elm$html$Html$Attributes$class('icon material-icons'),
-				A2(author$project$Main$makeAttr, 'alt', 'Download'),
-				A2(author$project$Main$makeAttr, 'aria-label', 'Download'),
-				elm$html$Html$Attributes$title('Download')
+				A2(author$project$Main$makeAttr, 'alt', action.name),
+				A2(author$project$Main$makeAttr, 'aria-label', action.name),
+				elm$html$Html$Attributes$title(action.name)
 			]),
 		_List_fromArray(
 			[
-				elm$html$Html$text('file_download')
-			])),
-		A2(
-		elm$html$Html$a,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$href('#print'),
-				elm$html$Html$Attributes$class('icon material-icons'),
-				A2(author$project$Main$makeAttr, 'alt', 'Print this page'),
-				A2(author$project$Main$makeAttr, 'aria-label', 'Print this page'),
-				elm$html$Html$Attributes$title('Print this page')
-			]),
-		_List_fromArray(
-			[
-				elm$html$Html$text('print')
-			])),
-		A2(
-		elm$html$Html$a,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$href('#bookmark'),
-				elm$html$Html$Attributes$class('icon material-icons'),
-				A2(author$project$Main$makeAttr, 'alt', 'Bookmark this page'),
-				A2(author$project$Main$makeAttr, 'aria-label', 'Boomark this page'),
-				elm$html$Html$Attributes$title('Bookmark this page')
-			]),
-		_List_fromArray(
-			[
-				elm$html$Html$text('bookmark')
-			]))
-	]);
+				elm$html$Html$text(action.glyph)
+			]));
+};
+var author$project$Main$sectionEndEle = function (actions) {
+	return A2(elm$core$List$map, author$project$Main$makeAnchor, actions);
+};
 var author$project$Main$sectionStartAttr = elm$html$Html$Attributes$class('flx-jus-con-str flx-ord-nil');
 var elm$html$Html$span = _VirtualDom_node('span');
 var author$project$Main$sectionStartEle = function (titleText) {
@@ -5686,10 +5609,8 @@ var author$project$Main$sectionStartEle = function (titleText) {
 				]))
 		]);
 };
-var elm$html$Html$b = _VirtualDom_node('b');
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$header = _VirtualDom_node('header');
-var elm$html$Html$i = _VirtualDom_node('i');
 var elm$html$Html$main_ = _VirtualDom_node('main');
 var elm$html$Html$p = _VirtualDom_node('p');
 var elm$html$Html$section = _VirtualDom_node('section');
@@ -5724,7 +5645,7 @@ var author$project$Main$view = function (model) {
 								elm$html$Html$section,
 								_List_fromArray(
 									[author$project$Main$sectionEndAttr]),
-								author$project$Main$sectionEndEle)
+								author$project$Main$sectionEndEle(model.actions))
 							]))
 					])),
 				A2(
@@ -5741,28 +5662,18 @@ var author$project$Main$view = function (model) {
 						_List_fromArray(
 							[
 								elm$html$Html$text('This is the standard '),
-								A2(
-								elm$html$Html$b,
-								_List_Nil,
-								_List_fromArray(
-									[
-										elm$html$Html$text('Top App Bar')
-									])),
+								author$project$Main$decorate(
+								author$project$Main$Bold('Top App Bar')),
 								elm$html$Html$text(' model of '),
-								A2(
-								elm$html$Html$i,
-								_List_Nil,
-								_List_fromArray(
-									[
-										elm$html$Html$text('materialistic-elm')
-									]))
+								author$project$Main$decorate(
+								author$project$Main$Italic('materialistic-elm'))
 							])),
 						A2(
 						elm$html$Html$p,
 						_List_Nil,
 						_List_fromArray(
 							[
-								elm$html$Html$text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, \n                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut \n                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \n                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in \n                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint \n                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit \n                anim id est laborum.')
+								elm$html$Html$text('Notice: Lorem ipsum dolor sit amet, consectetur adipiscing elit, \n                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut \n                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \n                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in \n                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint \n                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit \n                anim id est laborum.')
 							]))
 					]))
 			]));
@@ -9959,182 +9870,3 @@ var author$project$Main$main = elm$browser$Browser$sandbox(
 	{init: author$project$Main$init, update: author$project$Main$update, view: author$project$Main$view});
 _Platform_export({'Main':{'init':author$project$Main$main(
 	elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.0"},"types":{"message":"Main.Msg","aliases":{},"unions":{"Main.Msg":{"args":[],"tags":{"NoOp":[]}}}}})}});}(this));
-},{}],"js/index.js":[function(require,module,exports) {
-"use strict";
-
-var _Main = require("../src/Main.elm");
-
-_Main.Elm.Main.init({
-  node: document.getElementById('app')
-});
-},{"../src/Main.elm":"src/Main.elm"}],"../../.nvm/versions/node/v8.11.2/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
-var global = arguments[3];
-var OVERLAY_ID = '__parcel__error__overlay__';
-var OldModule = module.bundle.Module;
-
-function Module(moduleName) {
-  OldModule.call(this, moduleName);
-  this.hot = {
-    data: module.bundle.hotData,
-    _acceptCallbacks: [],
-    _disposeCallbacks: [],
-    accept: function (fn) {
-      this._acceptCallbacks.push(fn || function () {});
-    },
-    dispose: function (fn) {
-      this._disposeCallbacks.push(fn);
-    }
-  };
-  module.bundle.hotData = null;
-}
-
-module.bundle.Module = Module;
-var parent = module.bundle.parent;
-
-if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
-  var hostname = "" || location.hostname;
-  var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49252" + '/');
-
-  ws.onmessage = function (event) {
-    var data = JSON.parse(event.data);
-
-    if (data.type === 'update') {
-      console.clear();
-      data.assets.forEach(function (asset) {
-        hmrApply(global.parcelRequire, asset);
-      });
-      data.assets.forEach(function (asset) {
-        if (!asset.isNew) {
-          hmrAccept(global.parcelRequire, asset.id);
-        }
-      });
-    }
-
-    if (data.type === 'reload') {
-      ws.close();
-
-      ws.onclose = function () {
-        location.reload();
-      };
-    }
-
-    if (data.type === 'error-resolved') {
-      console.log('[parcel] ✨ Error resolved');
-      removeErrorOverlay();
-    }
-
-    if (data.type === 'error') {
-      console.error('[parcel] 🚨  ' + data.error.message + '\n' + data.error.stack);
-      removeErrorOverlay();
-      var overlay = createErrorOverlay(data);
-      document.body.appendChild(overlay);
-    }
-  };
-}
-
-function removeErrorOverlay() {
-  var overlay = document.getElementById(OVERLAY_ID);
-
-  if (overlay) {
-    overlay.remove();
-  }
-}
-
-function createErrorOverlay(data) {
-  var overlay = document.createElement('div');
-  overlay.id = OVERLAY_ID; // html encode message and stack trace
-
-  var message = document.createElement('div');
-  var stackTrace = document.createElement('pre');
-  message.innerText = data.error.message;
-  stackTrace.innerText = data.error.stack;
-  overlay.innerHTML = '<div style="background: black; font-size: 16px; color: white; position: fixed; height: 100%; width: 100%; top: 0px; left: 0px; padding: 30px; opacity: 0.85; font-family: Menlo, Consolas, monospace; z-index: 9999;">' + '<span style="background: red; padding: 2px 4px; border-radius: 2px;">ERROR</span>' + '<span style="top: 2px; margin-left: 5px; position: relative;">🚨</span>' + '<div style="font-size: 18px; font-weight: bold; margin-top: 20px;">' + message.innerHTML + '</div>' + '<pre>' + stackTrace.innerHTML + '</pre>' + '</div>';
-  return overlay;
-}
-
-function getParents(bundle, id) {
-  var modules = bundle.modules;
-
-  if (!modules) {
-    return [];
-  }
-
-  var parents = [];
-  var k, d, dep;
-
-  for (k in modules) {
-    for (d in modules[k][1]) {
-      dep = modules[k][1][d];
-
-      if (dep === id || Array.isArray(dep) && dep[dep.length - 1] === id) {
-        parents.push(k);
-      }
-    }
-  }
-
-  if (bundle.parent) {
-    parents = parents.concat(getParents(bundle.parent, id));
-  }
-
-  return parents;
-}
-
-function hmrApply(bundle, asset) {
-  var modules = bundle.modules;
-
-  if (!modules) {
-    return;
-  }
-
-  if (modules[asset.id] || !bundle.parent) {
-    var fn = new Function('require', 'module', 'exports', asset.generated.js);
-    asset.isNew = !modules[asset.id];
-    modules[asset.id] = [fn, asset.deps];
-  } else if (bundle.parent) {
-    hmrApply(bundle.parent, asset);
-  }
-}
-
-function hmrAccept(bundle, id) {
-  var modules = bundle.modules;
-
-  if (!modules) {
-    return;
-  }
-
-  if (!modules[id] && bundle.parent) {
-    return hmrAccept(bundle.parent, id);
-  }
-
-  var cached = bundle.cache[id];
-  bundle.hotData = {};
-
-  if (cached) {
-    cached.hot.data = bundle.hotData;
-  }
-
-  if (cached && cached.hot && cached.hot._disposeCallbacks.length) {
-    cached.hot._disposeCallbacks.forEach(function (cb) {
-      cb(bundle.hotData);
-    });
-  }
-
-  delete bundle.cache[id];
-  bundle(id);
-  cached = bundle.cache[id];
-
-  if (cached && cached.hot && cached.hot._acceptCallbacks.length) {
-    cached.hot._acceptCallbacks.forEach(function (cb) {
-      cb();
-    });
-
-    return true;
-  }
-
-  return getParents(global.parcelRequire, id).some(function (id) {
-    return hmrAccept(global.parcelRequire, id);
-  });
-}
-},{}]},{},["../../.nvm/versions/node/v8.11.2/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/index.js"], null)
-//# sourceMappingURL=/js.00a46daa.map

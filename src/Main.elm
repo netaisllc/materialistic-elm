@@ -20,11 +20,29 @@ main =
 -- MODEL
 
 
+type alias Action =
+    { name : String
+    , href : String
+    , glyph : String
+    }
+
+
+type alias Actions =
+    List Action
+
+
+type TextDecoration
+    = Bold String
+    | BoldItalic String
+    | Italic String
+
+
 type alias Model =
     { baseClass : String
     , bgColor : String
     , color : String
     , title : String
+    , actions : Actions
     }
 
 
@@ -34,6 +52,11 @@ init =
     , bgColor = "bg-darkblue"
     , color = "white"
     , title = "Materialistic Elm / TopAppBar / Standard"
+    , actions =
+        [ { name = "Download", href = "download", glyph = "file_download" }
+        , { name = "Print this page", href = "print", glyph = "print" }
+        , { name = "Bookmark this page", href = "bookmark", glyph = "bookmark" }
+        ]
     }
 
 
@@ -91,34 +114,9 @@ sectionEndAttr =
     class "flx-jus-con-end flx-ord-one"
 
 
-sectionEndEle : List (Html msg)
-sectionEndEle =
-    -- TODO map over a collection
-    [ a
-        [ href "#download"
-        , class "icon material-icons"
-        , makeAttr "alt" "Download"
-        , makeAttr "aria-label" "Download"
-        , title "Download"
-        ]
-        [ text "file_download" ]
-    , a
-        [ href "#print"
-        , class "icon material-icons"
-        , makeAttr "alt" "Print this page"
-        , makeAttr "aria-label" "Print this page"
-        , title "Print this page"
-        ]
-        [ text "print" ]
-    , a
-        [ href "#bookmark"
-        , class "icon material-icons"
-        , makeAttr "alt" "Bookmark this page"
-        , makeAttr "aria-label" "Boomark this page"
-        , title "Bookmark this page"
-        ]
-        [ text "bookmark" ]
-    ]
+sectionEndEle : Actions -> List (Html msg)
+sectionEndEle actions =
+    List.map makeAnchor actions
 
 
 view : Model -> Html Msg
@@ -134,24 +132,52 @@ view model =
                     (sectionStartEle model.title)
                 , section
                     [ sectionEndAttr ]
-                    sectionEndEle
+                    (sectionEndEle model.actions)
                 ]
             ]
         , main_
             []
             [ p
                 [ class "darkblue" ]
-                -- inline style by syring manipulation. A better way?
                 [ text "This is the standard "
-                , b [] [ text "Top App Bar" ]
+                , decorate (Bold "Top App Bar")
                 , text " model of "
-                , i [] [ text "materialistic-elm" ]
+                , decorate (Italic "materialistic-elm")
                 ]
             , p
                 []
-                [ text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, \n                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut \n                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \n                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in \n                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint \n                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit \n                anim id est laborum." ]
+                [ text "Notice: Lorem ipsum dolor sit amet, consectetur adipiscing elit, \n                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut \n                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \n                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in \n                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint \n                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit \n                anim id est laborum." ]
             ]
         ]
+
+
+
+-- HELPERS
+
+
+decorate : TextDecoration -> Html msg
+decorate style =
+    case style of
+        Bold string ->
+            b [] [ text string ]
+
+        BoldItalic string ->
+            b [] [ i [] [ text string ] ]
+
+        Italic string ->
+            i [] [ text string ]
+
+
+makeAnchor : Action -> Html msg
+makeAnchor action =
+    a
+        [ href ("#" ++ action.href)
+        , class "icon material-icons"
+        , makeAttr "alt" action.name
+        , makeAttr "aria-label" action.name
+        , title action.name
+        ]
+        [ text action.glyph ]
 
 
 makeAttr : String -> String -> Attribute msg

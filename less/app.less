@@ -1,28 +1,29 @@
+// #region - Static imports
+
 @import (css) url('./normalize.css');
 @import (css) url('./main.css');
-
 @import (css) url('https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700');
 @import (css) url("https://fonts.googleapis.com/icon?family=Material+Icons");
-
 @import (css) url('./flex.css');
 
-// #region - Colors
-/*
+// #endregion  
 
-  COLORS :: Better default colors for the web
 
-   VARIABLES
-   - Cool
-   - Warm
-   - Gray Scale
+// #region - Colors  (clrs.cc)
+/*  
+    COLORS :: Better default colors for the web
 
-   SKINS
-   - Backgrounds
-   - Colors
-   - Border colors
-   - SVG fills
-   - SVG Strokes
+    VARIABLES
+    - Cool
+    - Warm
+    - Gray Scale
 
+    SKINS
+    - Backgrounds
+    - Colors
+    - Border colors
+    - SVG fills
+    - SVG Strokes
 */
 
 /* Backgrounds */
@@ -131,10 +132,10 @@
 // #endregion
 
 
-
-
+// #region Application specific
 body {
     font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
 
     input {
         font-size: 13pt;
@@ -150,3 +151,5 @@ body {
     height: 200vh;
     width: 100vw;
 }
+
+@import url('./topappbar.less');
